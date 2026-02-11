@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "src": "src/pages/Home.tsx"
+    }
+  ],
+  "components": [
+    {"name": "Header", "src": "src/components/Header.tsx"},
+    {"name": "Hero", "src": "src/components/Hero.tsx"}
+  ]
+}

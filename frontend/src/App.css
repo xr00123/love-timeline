@@ -1,251 +1,111 @@
-.app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+@reference "./index.css";
 
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.brand {
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.tabs {
-  display: flex;
-  gap: 8px;
-}
-
-.tab {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: transparent;
-  padding: 6px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.tab.active {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.main {
-  width: 100%;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 16px;
-}
+/* Legacy styles for views not yet migrated to Tailwind/Shadcn */
 
 .panel {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  padding: 16px;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 12px 0;
-}
-
-.label {
-  opacity: 0.75;
-  font-size: 13px;
-}
-
-input,
-textarea {
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  color: inherit;
-  padding: 10px 12px;
-}
-
-textarea {
-  resize: vertical;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
+  @apply bg-white/50 border border-white/60 rounded-2xl p-6 shadow-sm backdrop-blur-sm;
 }
 
 .btn {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: transparent;
-  padding: 8px 12px;
-  border-radius: 10px;
-  cursor: pointer;
+  @apply px-4 py-2 rounded-lg border border-white/10 bg-white text-gray-800 cursor-pointer text-sm hover:bg-gray-50 transition-colors;
 }
 
 .btn.primary {
-  background: rgba(100, 108, 255, 0.22);
-  border-color: rgba(100, 108, 255, 0.4);
+  @apply bg-[#9C6C53] text-white border-transparent hover:bg-[#825541];
 }
 
 .btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  @apply opacity-50 cursor-not-allowed;
 }
 
-.muted {
-  opacity: 0.75;
+.field {
+  @apply flex flex-col mb-4;
 }
 
-.error {
-  margin-top: 12px;
-  color: #ff6b6b;
-  white-space: pre-wrap;
+.label {
+  @apply text-gray-500 text-xs mb-1.5;
 }
 
-.result {
-  margin-top: 12px;
+input, textarea {
+  @apply bg-white/70 border border-black/5 rounded-lg px-3 py-2.5 text-gray-800 transition-all focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#9C6C53]/20;
 }
 
-.content {
-  white-space: pre-wrap;
-  word-break: break-word;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  padding: 12px;
-  margin: 8px 0 0;
+.grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-5;
 }
 
+.actions {
+  @apply flex gap-3 mt-5;
+}
+
+/* Cards */
 .cards {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-top: 12px;
+  @apply grid grid-cols-1 gap-4 mt-3;
 }
 
 .card {
-  text-align: left;
-  padding: 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
-  cursor: pointer;
+  @apply bg-white/60 border border-white/80 rounded-2xl p-4 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md hover:bg-white/85 text-left;
 }
 
 .card-title {
-  font-weight: 600;
-}
-
-.card-sub {
-  opacity: 0.7;
-  font-size: 12px;
-  margin-top: 4px;
+  @apply text-gray-800 font-semibold;
 }
 
 .card-body {
-  margin-top: 8px;
-  opacity: 0.9;
-}
-
-.tags {
-  margin-top: 8px;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  @apply text-gray-600 mt-2 leading-relaxed;
 }
 
 .tag {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  opacity: 0.85;
+  @apply bg-[#9C6C53]/10 text-[#9C6C53] border-none px-2.5 py-0.5 text-xs rounded-full;
 }
 
-.search-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+.tags {
+  @apply mt-2 flex gap-1.5 flex-wrap;
 }
 
-.search-row input {
-  flex: 1;
-}
-
+/* Drawer */
 .drawer-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  display: flex;
-  justify-content: flex-end;
-  padding: 16px;
+  @apply fixed inset-0 bg-black/50 flex justify-end p-4 z-50;
 }
 
 .drawer {
-  width: 520px;
-  max-width: calc(100vw - 32px);
-  background: rgba(24, 24, 28, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  @apply w-[520px] max-w-[calc(100vw-32px)] bg-white/95 backdrop-blur-xl border border-white/20 rounded-2xl p-4 flex flex-col gap-2.5 shadow-2xl transition-transform duration-300;
 }
 
 .drawer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+  @apply flex justify-between items-center gap-2.5 border-b border-gray-100 pb-3 mb-3;
 }
 
 .drawer-title {
-  font-weight: 700;
+  @apply font-bold text-lg;
 }
 
 .drawer-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  @apply flex flex-col gap-2.5 overflow-y-auto;
 }
 
 .row {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 12px;
-  align-items: start;
+  @apply grid grid-cols-[96px_1fr] gap-3 items-start;
 }
 
-@media (max-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+.content {
+  @apply bg-gray-50 border border-gray-100 rounded-xl p-3 text-gray-800 whitespace-pre-wrap break-words mt-2 font-mono text-sm;
+}
 
-  .search-row {
-    flex-direction: column;
-  }
+/* Utilities */
+.muted { @apply text-gray-400; }
+.error { @apply text-red-500 mt-3; }
+.search-row { @apply flex gap-2.5 mt-2.5; }
+.search-row input { @apply flex-1; }
 
-  .row {
-    grid-template-columns: 1fr;
-  }
+.spinner {
+  @apply w-5 h-5 border-2 border-[#9C6C53]/20 border-t-[#9C6C53] rounded-full animate-spin;
+}
+
+.loading-container {
+  @apply flex items-center gap-2.5 py-5 text-[#9C6C53];
+}
+
+.empty-result {
+  @apply py-10 text-center text-gray-400 italic;
 }

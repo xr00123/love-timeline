@@ -61,6 +61,33 @@ export async function uploadMemoryFile(input: {
   return (await resp.json()) as MemoryDetail
 }
 
+export async function createUnifiedMemory(input: {
+  files?: File[]
+  content?: string
+  tags?: string[]
+  occurred_at?: string | null
+}): Promise<MemoryDetail> {
+  const form = new FormData()
+  if (input.files) {
+    for (const f of input.files) {
+      form.append('files', f)
+    }
+  }
+  if (input.content) form.append('content', input.content)
+  if (input.occurred_at) form.append('occurred_at', input.occurred_at)
+  if (input.tags && input.tags.length > 0) form.append('tags', input.tags.join(','))
+
+  const resp = await fetch(`${API_BASE_URL}/memories/unified`, {
+    method: 'POST',
+    body: form,
+  })
+  if (!resp.ok) {
+    const text = await resp.text()
+    throw new Error(`${resp.status} ${text}`)
+  }
+  return (await resp.json()) as MemoryDetail
+}
+
 export async function searchMemories(query: string, limit = 5): Promise<SearchHitRead[]> {
   return requestJson<SearchHitRead[]>('/search', {
     method: 'POST',

@@ -12,10 +12,14 @@ export function SearchView(props: Props) {
   const [items, setItems] = useState<SearchHitRead[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [hasSearched, setHasSearched] = useState(false)
 
   async function run() {
+    if (!query.trim()) return
     setLoading(true)
+    setHasSearched(true)
     setError(null)
+    setItems([])
     try {
       const data = await searchMemories(query, 8)
       setItems(data)
@@ -31,13 +35,19 @@ export function SearchView(props: Props) {
     <div className="panel">
       <h2>自然语言检索</h2>
       <div className="search-row">
-        <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="例如：我们第一次去海边的那天" />
+        <input value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && void run()} placeholder="例如：我们第一次去海边的那天" />
         <button className="btn primary" disabled={loading || query.trim().length === 0} onClick={() => void run()}>
           搜索
         </button>
       </div>
-      {loading ? <div className="muted">检索中…</div> : null}
+      {loading ? (
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <div>正在翻阅记忆...</div>
+        </div>
+      ) : null}
       {error ? <div className="error">{error}</div> : null}
+      {!loading && hasSearched && items.length === 0 && !error ? <div className="empty-result">没有找到相关的记忆碎片</div> : null}
       <div className="cards">
         {items.map((h) => (
           <button key={h.memory_id} className="card" onClick={() => props.onOpen(h.memory_id)}>
