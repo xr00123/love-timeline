@@ -1,8 +1,15 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useHomeImage } from '@/hooks/use-home-image';
 
-export const HomeView: React.FC = () => {
+interface HomeViewProps {
+  onNavigate: (tab: 'record') => void;
+}
+
+export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
+  const { image } = useHomeImage();
+  
   return (
     <div className="w-full h-full flex flex-col md:flex-row items-center justify-between px-12 md:px-24 pt-10 pb-20 relative overflow-hidden">
       
@@ -30,8 +37,9 @@ export const HomeView: React.FC = () => {
         <div className="pt-4">
           <Button 
             className="bg-[#8D6E63] hover:bg-[#795548] text-white px-8 py-6 rounded-full text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
+            onClick={() => onNavigate('record')}
           >
-            立即背念
+            记录一下
           </Button>
         </div>
 
@@ -46,15 +54,21 @@ export const HomeView: React.FC = () => {
       {/* Right Content - Hero Image */}
       <div className="w-full md:w-6/12 relative h-[500px] md:h-[600px] mt-10 md:mt-0">
         <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
-          {/* Placeholder for Couple Image - Using a gradient placeholder since we don't have the asset */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#fdfbf7] to-[#e6e9f0] flex items-center justify-center">
-             <div className="text-center p-10">
-               <div className="w-48 h-48 mx-auto bg-gray-200 rounded-full mb-4 flex items-center justify-center text-gray-400">
-                  <span className="text-xs">Couple Image</span>
+          {image ? (
+            <div className="absolute inset-0 bg-gray-100">
+              <img src={image} alt="Couple" className="w-full h-full object-cover" />
+            </div>
+          ) : (
+            /* Placeholder for Couple Image - Using a gradient placeholder since we don't have the asset */
+            <div className="absolute inset-0 bg-gradient-to-br from-[#fdfbf7] to-[#e6e9f0] flex items-center justify-center">
+               <div className="text-center p-10">
+                 <div className="w-48 h-48 mx-auto bg-gray-200 rounded-full mb-4 flex items-center justify-center text-gray-400">
+                    <span className="text-xs">Couple Image</span>
+                 </div>
+                 <p className="text-gray-400 italic">"The best thing to hold onto in life is each other."</p>
                </div>
-               <p className="text-gray-400 italic">"The best thing to hold onto in life is each other."</p>
-             </div>
-          </div>
+            </div>
+          )}
           
           {/* Sparkles/Stars */}
           <Sparkles className="absolute top-10 right-10 text-white w-8 h-8 opacity-80" />

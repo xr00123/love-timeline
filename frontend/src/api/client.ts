@@ -1,6 +1,6 @@
 import type { Health, MemoryDetail, MemoryRead, SearchHitRead } from './types'
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://localhost:8000'
+export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://localhost:8000'
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   const resp = await fetch(`${API_BASE_URL}${path}`, {
@@ -92,6 +92,39 @@ export async function searchMemories(query: string, limit = 5): Promise<SearchHi
   return requestJson<SearchHitRead[]>('/search', {
     method: 'POST',
     body: JSON.stringify({ query, limit }),
+  })
+}
+
+export async function getHomeImage(): Promise<{ url: string | null }> {
+  const res = await requestJson<{ url: string | null }>('/uploads/home-image')
+  if (res.url && res.url.startsWith('/')) {
+    return { url: `${API_BASE_URL}${res.url}` }
+  }
+  return res
+}
+
+export async function uploadHomeImage(file: File): Promise<{ url: string | null }> {
+  const form = new FormData()
+  form.append('file', file)
+
+  const resp = await fetch(`${API_BASE_URL}/uploads/home-image`, {
+    method: 'POST',
+    body: form,
+  })
+  if (!resp.ok) {
+    const text = await resp.text()
+    throw new Error(`${resp.status} ${text}`)
+  }
+  const res = (await resp.json()) as { url: string | null }
+  if (res.url && res.url.startsWith('/')) {
+    return { url: `${API_BASE_URL}${res.url}` }
+  }
+  return res
+}
+
+export async function deleteHomeImage(): Promise<{ url: string | null }> {
+  return requestJson<{ url: string | null }>('/uploads/home-image', {
+    method: 'DELETE',
   })
 }
 

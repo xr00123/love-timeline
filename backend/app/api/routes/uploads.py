@@ -2,8 +2,13 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from fastapi import APIRouter, File, Form, UploadFile
+import shutil
+from pathlib import Path
 
+from fastapi import APIRouter, File, Form, UploadFile
+from pydantic import BaseModel
+
+from app.core.settings import settings
 from app.db.models import Attachment
 from app.db.session import SessionDep
 from app.schemas.memory import MemoryDetail
@@ -13,6 +18,40 @@ from app.services.preprocess import preprocess_upload
 from app.services.vector_store import index_memory
 
 router = APIRouter()
+
+
+class ImageResponse(BaseModel):
+    url: str | None
+
+
+@router.get("/home-image", response_model=ImageResponse)
+def get_home_image():
+    static_dir = settings.data_dir / "static"
+    image_path = static_dir / "home_image.png"
+    if image_path.exists():
+        return ImageResponse(url="/static/home_image.png")
+    return ImageResponse(url=None)
+
+
+@router.post("/home-image", response_model=ImageResponse)
+async def upload_home_image(file: UploadFile = File(...)):
+    static_dir = settings.data_dir / "static"
+    static_dir.mkdir(parents=True, exist_ok=True)
+    file_path = static_dir / "home_image.png"
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    return ImageResponse(url="/static/home_image.png")
+
+
+@router.delete("/home-image", response_model=ImageResponse)
+def delete_home_image():
+    static_dir = settings.data_dir / "static"
+    image_path = static_dir / "home_image.png"
+    if image_path.exists():
+        image_path.unlink()
+    return ImageResponse(url=None)
 
 
 def _parse_tags(raw: str | None) -> list[str]:

@@ -1,6 +1,4 @@
 import React from 'react';
-import { Search, Lightbulb } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export type TabKey = 'home' | 'timeline' | 'record' | 'search' | 'settings';
 
@@ -13,7 +11,6 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
   const navItems: { label: string; value: TabKey }[] = [
     { label: '首页', value: 'home' },
     { label: '时间线', value: 'timeline' },
-    { label: '记录', value: 'record' },
     { label: '检索', value: 'search' },
     { label: '设置', value: 'settings' },
   ];
@@ -57,17 +54,6 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
 
       {/* Right Actions */}
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon" className="text-gray-600 hover:text-black hover:bg-black/5 rounded-full">
-          <Search className="w-5 h-5" />
-        </Button>
-        <Button variant="ghost" size="icon" className="text-gray-600 hover:text-black hover:bg-black/5 rounded-full">
-          <Lightbulb className="w-5 h-5" />
-        </Button>
-        <Button 
-          className="bg-[#C4A484] hover:bg-[#A68666] text-white rounded-full px-6 shadow-md transition-all"
-        >
-          换肤库
-        </Button>
       </div>
     </header>
   );

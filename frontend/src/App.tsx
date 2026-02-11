@@ -13,7 +13,7 @@ function App() {
   const [openId, setOpenId] = useState<string | null>(null)
 
   const content = useMemo(() => {
-    if (tab === 'home') return <HomeView />
+    if (tab === 'home') return <HomeView onNavigate={(t) => setTab(t)} />
     if (tab === 'timeline') return <TimelineView onOpen={(id) => setOpenId(id)} />
     if (tab === 'record') return <RecordView />
     if (tab === 'search') return <SearchView onOpen={(id) => setOpenId(id)} />
