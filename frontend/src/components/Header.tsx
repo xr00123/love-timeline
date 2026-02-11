@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
   const navItems: { label: string; value: TabKey }[] = [
     { label: '首页', value: 'home' },
     { label: '时间线', value: 'timeline' },
-    { label: '检索', value: 'search' },
+    { label: '找回记忆', value: 'search' },
     { label: '设置', value: 'settings' },
   ];
 

@@ -11,7 +11,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
   const { image } = useHomeImage();
   
   return (
-    <div className="w-full h-full flex flex-col md:flex-row items-center justify-between px-12 md:px-24 pt-10 pb-20 relative overflow-hidden">
+    <div className="w-full h-full flex flex-col md:flex-row items-center justify-between px-8 md:px-24 py-6 md:py-10 relative overflow-hidden">
       
       {/* Decorative Background Elements */}
       <div className="absolute top-20 left-10 w-2 h-2 rounded-full bg-gray-300"></div>
@@ -52,7 +52,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
       </div>
 
       {/* Right Content - Hero Image */}
-      <div className="w-full md:w-6/12 relative h-[500px] md:h-[600px] mt-10 md:mt-0">
+      <div className="w-full md:w-6/12 relative h-[400px] md:h-[calc(100vh-200px)] max-h-[600px] mt-8 md:mt-0">
         <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
           {image ? (
             <div className="absolute inset-0 bg-gray-100">

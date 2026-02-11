@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { useHomeImage } from '@/hooks/use-home-image'
 
@@ -18,6 +19,16 @@ export function SettingsView() {
 
     // Pass the file directly to saveImage (which now calls the API)
     saveImage(file)
+      .then(() => {
+        toast.success('首页图片已更新', {
+          description: '切换回首页即可查看新效果'
+        })
+      })
+      .catch((err) => {
+        toast.error('上传失败', {
+          description: String(err)
+        })
+      })
   }
 
   const handleUploadClick = () => {
@@ -51,7 +62,9 @@ export function SettingsView() {
       <div className="row" style={{ marginTop: '20px', alignItems: 'flex-start' }}>
         <div className="label">首页图片</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <div style={{ fontSize: '12px', color: '#666' }}>建议上传 1:1 比例的图片，将展示在首页</div>
+          <div style={{ fontSize: '12px', color: '#666' }}>
+            请上传 <strong style={{ color: '#9C6C53' }}>1:1 比例</strong> 的图片，上传后将自动替换首页配图
+          </div>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <input 
               type="file" 

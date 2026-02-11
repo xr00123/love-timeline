@@ -12,7 +12,7 @@ class OllamaError(RuntimeError):
 
 
 def _client() -> httpx.Client:
-    return httpx.Client(base_url=str(settings.ollama_base_url), timeout=60.0)
+    return httpx.Client(base_url=str(settings.local_ollama_url), timeout=60.0)
 
 
 def embed_texts(texts: list[str]) -> list[list[float]]:

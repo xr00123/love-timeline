@@ -33,7 +33,7 @@ export function SearchView(props: Props) {
 
   return (
     <div className="panel">
-      <h2>自然语言检索</h2>
+      <h2>输入要找的记忆</h2>
       <div className="search-row">
         <input value={query} onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && void run()} placeholder="例如：我们第一次去海边的那天" />
         <button className="btn primary" disabled={loading || query.trim().length === 0} onClick={() => void run()}>

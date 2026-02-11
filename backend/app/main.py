@@ -14,13 +14,8 @@ def create_app() -> FastAPI:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-            "http://localhost:5174",
-            "http://127.0.0.1:5174",
-        ],
-        allow_credentials=True,
+        allow_origins=["*"],
+        allow_credentials=False,
         allow_methods=["*"],
         allow_headers=["*"],
     )
@@ -30,7 +25,12 @@ def create_app() -> FastAPI:
     (settings.data_dir / "static").mkdir(parents=True, exist_ok=True)
     init_db()
 
-    app.mount("/static", StaticFiles(directory=settings.data_dir / "static"), name="static")
+    # Mount static files correctly
+    static_dir = settings.data_dir / "static"
+    if not static_dir.exists():
+        static_dir.mkdir(parents=True, exist_ok=True)
+        
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
     app.include_router(api_router)
     return app
 
