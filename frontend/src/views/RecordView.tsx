@@ -18,7 +18,6 @@ export function RecordView() {
   const [loading, setLoading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Reset files when tab changes
   const handleTabChange = (value: string) => {
     setActiveTab(value)
     setFiles([])
@@ -41,7 +40,6 @@ export function RecordView() {
     if (e.target.files) {
       processFiles(Array.from(e.target.files))
     }
-    // Reset input value to allow re-selecting the same file
     e.target.value = ''
   }
 
@@ -53,7 +51,7 @@ export function RecordView() {
       let isValid = false
       if (activeTab === 'photo' && file.type.startsWith('image/')) isValid = true
       else if (activeTab === 'video' && file.type.startsWith('video/')) isValid = true
-      else if (activeTab === 'document') isValid = true // Accept all for doc, logical fallback
+      else if (activeTab === 'document') isValid = true
 
       if (isValid) {
         validFiles.push(file)
@@ -67,8 +65,8 @@ export function RecordView() {
         activeTab === 'photo'
           ? '仅支持上传图片格式文件'
           : activeTab === 'video'
-          ? '仅支持上传视频格式文件'
-          : '不支持的文件格式'
+            ? '仅支持上传视频格式文件'
+            : '不支持的文件格式'
       )
     } else {
       setError(null)
@@ -112,7 +110,6 @@ export function RecordView() {
         occurred_at: occurredAt ? new Date(occurredAt).toISOString() : null,
       })
       setResult(data)
-      // Reset form
       setContent('')
       setTags([])
       setOccurredAt('')
@@ -124,7 +121,6 @@ export function RecordView() {
     }
   }
 
-  // Previews
   const renderPreview = (file: File, index: number) => {
     const isImage = file.type.startsWith('image/')
     return (
@@ -153,28 +149,41 @@ export function RecordView() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8 bg-white/50 backdrop-blur-sm rounded-3xl border border-white/60 shadow-sm">
+    <div style={{ 
+      maxWidth: '70%',  // 核心：宽度70%
+      minWidth: '320px', // 小屏最小宽度，避免过窄
+      margin: '0 auto', // 水平居中
+      width: '100%'     // 自适应父容器
+    }} className="p-6 space-y-8 bg-white/50 backdrop-blur-sm rounded-3xl border-2 border-white/60 shadow-sm">
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-serif font-bold text-gray-800">记录美好时光</h2>
       </div>
 
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-6 bg-gray-100/80 p-1">
-          <TabsTrigger value="photo" className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+        <TabsList className="flex w-full mb-6 bg-gray-100/80 p-1">
+          <TabsTrigger
+            value="photo"
+            className="flex-1 justify-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          >
             <Camera className="w-4 h-4" /> 照片
           </TabsTrigger>
-          <TabsTrigger value="video" className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+          <TabsTrigger
+            value="video"
+            className="flex-1 justify-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          >
             <Video className="w-4 h-4" /> 视频
           </TabsTrigger>
-          <TabsTrigger value="document" className="gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+          <TabsTrigger
+            value="document"
+            className="flex-1 justify-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          >
             <FileText className="w-4 h-4" /> 故事/文档
           </TabsTrigger>
         </TabsList>
 
-        {/* Upload Area */}
         <div
           className={cn(
-            "relative border-2 border-dashed rounded-2xl p-10 transition-all text-center cursor-pointer group",
+            "relative border-2 border-dashed rounded-2xl p-10 transition-all text-center cursor-pointer group w-full",
             error ? "border-red-300 bg-red-50/50" : "border-gray-300 hover:border-[#9C6C53] hover:bg-[#9C6C53]/5"
           )}
           onClick={() => fileInputRef.current?.click()}
@@ -189,7 +198,7 @@ export function RecordView() {
             accept={activeTab === 'photo' ? 'image/*' : activeTab === 'video' ? 'video/*' : '*'}
             onChange={handleFileSelect}
           />
-          
+
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               {activeTab === 'photo' && <ImageIcon className="w-8 h-8 text-gray-400 group-hover:text-[#9C6C53]" />}
@@ -205,14 +214,12 @@ export function RecordView() {
           </div>
         </div>
 
-        {/* Error Message */}
         {error && (
           <div className="mt-3 text-sm text-red-500 text-center animate-in fade-in slide-in-from-top-1">
             {error}
           </div>
         )}
 
-        {/* Previews */}
         {files.length > 0 && (
           <div className="mt-6 flex flex-wrap gap-4 animate-in fade-in zoom-in-95 duration-200">
             {files.map((file, i) => renderPreview(file, i))}
@@ -220,9 +227,8 @@ export function RecordView() {
         )}
       </Tabs>
 
-      <div className="space-y-6">
-        {/* Date Picker */}
-        <div className="space-y-2">
+      <div className="space-y-6 w-full">
+        <div className="space-y-2 w-full">
           <label className="text-sm font-medium text-gray-600 flex items-center gap-2">
             <Calendar className="w-4 h-4" /> 发生时间
             <span className="text-xs text-gray-400 font-normal">(✨ 已自动识别)</span>
@@ -235,8 +241,7 @@ export function RecordView() {
           />
         </div>
 
-        {/* Content */}
-        <div className="space-y-2">
+        <div className="space-y-2 w-full">
           <label className="text-sm font-medium text-gray-600">文本内容</label>
           <textarea
             value={content}
@@ -247,13 +252,12 @@ export function RecordView() {
           />
         </div>
 
-        {/* Tags */}
-        <div className="space-y-2">
+        <div className="space-y-2 w-full">
           <label className="text-sm font-medium text-gray-600 flex items-center gap-2">
             <Loader2 className="w-4 h-4" /> 标签
             <span className="text-xs text-gray-400 font-normal">(自动分析/手动)</span>
           </label>
-          <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100 min-h-[50px]">
+          <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100 min-h-[50px] w-full">
             {tags.map((t) => (
               <span
                 key={t}
@@ -268,7 +272,7 @@ export function RecordView() {
                 </button>
               </span>
             ))}
-            
+
             <div className="flex items-center gap-2 flex-1 min-w-[120px]">
               <Plus className="w-4 h-4 text-gray-400" />
               <input
@@ -283,9 +287,8 @@ export function RecordView() {
         </div>
       </div>
 
-      {/* Submit Action */}
-      <div className="pt-4">
-        <Button 
+      <div className="pt-4 w-full">
+        <Button
           className="w-full h-12 text-lg bg-[#9C6C53] hover:bg-[#825541] text-white shadow-lg shadow-[#9C6C53]/20 transition-all hover:-translate-y-0.5"
           disabled={loading}
           onClick={() => void submit()}
@@ -300,9 +303,8 @@ export function RecordView() {
         </Button>
       </div>
 
-      {/* Result Card */}
       {result && (
-        <div className="mt-8 p-6 bg-green-50 rounded-2xl border border-green-100 animate-in slide-in-from-bottom-4">
+        <div className="mt-8 p-6 bg-green-50 rounded-2xl border border-green-100 animate-in slide-in-from-bottom-4 w-full">
           <div className="flex items-center gap-2 text-green-700 font-medium mb-4">
             <span className="flex items-center justify-center w-6 h-6 rounded-full bg-green-200 text-green-800 text-xs">✓</span>
             记忆已保存
@@ -316,7 +318,7 @@ export function RecordView() {
               <span className="font-medium">标签：</span>
               {result.tags.join(', ')}
             </div>
-            <div className="p-3 bg-white/60 rounded-lg border border-green-100/50 mt-2">
+            <div className="p-3 bg-white/60 rounded-lg border border-green-100/50 mt-2 w-full">
               {result.content}
             </div>
           </div>
